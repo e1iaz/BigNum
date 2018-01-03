@@ -112,7 +112,6 @@ Num::Num(std::string first, std::string second, int m)
 	}
 	first_rear = Node;
 
-
 	Node = new Bit();
 	Node->r = second[0] - '0';
 	Node->father = NULL;
