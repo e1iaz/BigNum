@@ -60,7 +60,7 @@ namespace BigNum
                     second = "";
                 }
                 second += "1";
-                s = first + oper + second;
+                s = first + "\r\n" + oper + "\r\n" + second;
             }
             textBoxCalc.Text = s;
         }
@@ -83,7 +83,7 @@ namespace BigNum
                     second = "";
                 }
                 second += "2";
-                s = first + oper + second;
+                s = first + "\r\n" + oper + "\r\n" + second;
             }
             textBoxCalc.Text = s;
         }
@@ -106,7 +106,7 @@ namespace BigNum
                     second = "";
                 }
                 second += "3";
-                s = first + oper + second;
+                s = first + "\r\n" + oper + "\r\n" + second;
             }
             textBoxCalc.Text = s;
         }
@@ -129,7 +129,7 @@ namespace BigNum
                     second = "";
                 }
                 second += "4";
-                s = first + oper + second;
+                s = first + "\r\n" + oper + "\r\n" + second;
             }
             textBoxCalc.Text = s;
         }
@@ -152,7 +152,7 @@ namespace BigNum
                     second = "";
                 }
                 second += "5";
-                s = first + oper + second;
+                s = first + "\r\n" + oper + "\r\n" + second;
             }
             textBoxCalc.Text = s;
         }
@@ -175,7 +175,7 @@ namespace BigNum
                     second = "";
                 }
                 second += "6";
-                s = first + oper + second;
+                s = first + "\r\n" + oper + "\r\n" + second;
             }
             textBoxCalc.Text = s;
         }
@@ -198,7 +198,7 @@ namespace BigNum
                     second = "";
                 }
                 second += "7";
-                s = first + oper + second;
+                s = first + "\r\n" + oper + "\r\n" + second;
             }
             textBoxCalc.Text = s;
         }
@@ -221,7 +221,7 @@ namespace BigNum
                     second = "";
                 }
                 second += "8";
-                s = first + oper + second;
+                s = first + "\r\n" + oper + "\r\n" + second;
             }
             textBoxCalc.Text = s;
         }
@@ -244,7 +244,7 @@ namespace BigNum
                     second = "";
                 }
                 second += "9";
-                s = first + oper + second;
+                s = first + "\r\n" + oper + "\r\n" + second;
             }
             textBoxCalc.Text = s;
         }
@@ -338,7 +338,7 @@ namespace BigNum
                     oper = "0";
                     s = "";
                     if (wrong)
-                    {
+                    { 
                         textBoxCalc.Text = "";
                     }
                 }
@@ -359,18 +359,32 @@ namespace BigNum
                 fileDialog.Filter = "txt文件(*.txt)|*txt";
                 fileDialog.ShowDialog();
                 String file = fileDialog.FileName;
+                String last = file.Substring(file.Length - 4);
+                if (last == ".txt" || last == ".TXT")
+                {
+                }
+                else
+                {
+                    file += ".txt";
+                }
                 StreamWriter sw = new StreamWriter(file);
                 sw.WriteLine(save);
                 sw.Close();
             }
-            catch { }
+            catch
+            {
+            }
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
             if(oper=="0")
             {
-                s += "+";
+                if (first == "")
+                {
+                    first = "0";
+                }
+                s = first + "\r\n+\r\n";
                 textBoxCalc.Text = s;
                 oper = "+";
             }
@@ -381,7 +395,11 @@ namespace BigNum
         {
             if (oper=="0")
             {
-                s += "-";
+                if (first == "")
+                {
+                    first = "0";
+                }
+                s = first + "\r\n-\r\n";
                 textBoxCalc.Text = s;
                 oper = "-";
             }
@@ -391,7 +409,11 @@ namespace BigNum
         {
             if (oper=="0")
             {
-                s += "*";
+                if (first == "")
+                {
+                    first = "0";
+                }
+                s = first + "\r\n*\r\n";
                 textBoxCalc.Text = s;
                 oper = "*";
             }
@@ -401,7 +423,11 @@ namespace BigNum
         {
             if (oper=="0")
             {
-                s += "/";
+                if (first == "")
+                {
+                    first = "0";
+                }
+                s = first + "\r\n/\r\n";
                 textBoxCalc.Text = s;
                 oper = "/";
             }
@@ -411,7 +437,11 @@ namespace BigNum
         {
             if (oper=="0")
             {
-                s += "^";
+                if (first == "")
+                {
+                    first = "0";
+                }
+                s = first + "\r\n^\r\n";
                 textBoxCalc.Text = s;
                 oper = "^";
             }
@@ -425,41 +455,51 @@ namespace BigNum
             }
             else
             {
+                if (second == "")
+                {
+                    second = "0";
+                }
                 String result = "";
-                s = first + oper + second;
+                s = first + "\r\n"+oper+"\r\n" + second;
                 switch (oper)
                 {
                     case "+":
                         IntPtr pAdd = Add(first, second);
                         result = Marshal.PtrToStringAnsi(pAdd);
-                        s += "=" + result;
-                        textBoxCalc.Text = s;
                         break;
                     case "-":
                         IntPtr pSub = Sub(first, second);
                         result = Marshal.PtrToStringAnsi(pSub);
-                        s += "=" + result;
-                        textBoxCalc.Text = s;
                         break;
                     case "*":
                         IntPtr pMul = Mul(first, second);
                         result = Marshal.PtrToStringAnsi(pMul);
-                        s += "=" + result;
-                        textBoxCalc.Text = s;
                         break;
                     case "/":
-                        IntPtr pDiv = Div(first, second);
-                        result = Marshal.PtrToStringAnsi(pDiv);
-                        s += "=" + result;
-                        textBoxCalc.Text = s;
+                        if (second == "0")
+                        {
+                            MessageBox.Show("除数不能为零");
+                        }
+                        else
+                        {
+                            IntPtr pDiv = Div(first, second);
+                            result = Marshal.PtrToStringAnsi(pDiv);
+                        }
                         break;
                     case "^":
                         IntPtr pPow = Pow(first, second);
                         result = Marshal.PtrToStringAnsi(pPow);
-                        s += "=" + result;
-                        textBoxCalc.Text = s;
                         break;
                 }
+                if (oper == "/" && second == "0")
+                {
+                    s = "";
+                }
+                else
+                {
+                    s += "\r\n=\r\n" + result;
+                }
+                textBoxCalc.Text = s;
                 save = s;
                 oper = "0";
                 first = "";
@@ -494,7 +534,7 @@ namespace BigNum
             }
             else
             {
-                s = first + oper + second;
+                s = first + "\r\n" + oper + "\r\n" + second;
             }
             textBoxCalc.Text = s;
         }

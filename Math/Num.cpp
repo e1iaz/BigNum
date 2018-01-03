@@ -366,13 +366,15 @@ std::string Num::Sub()
 	this->sum_rear = sub;
 	int mark = 0;		//mark    0是相等    1是第一个小于第二个    2是第一个大于第二个
 
-						//先判断是否相等
+	//先判断是否相等
 	if (first_len == second_len) {
 		Bit *fHead = first_head;
 		Bit *sHead = second_head;
 		while (fHead != NULL) {
 			if (fHead->r < sHead->r) {
 				mark = 1;
+				first_temp = second_rear;
+				second_temp = first_rear;
 				break;
 			}
 			if (fHead->r > sHead->r) {
