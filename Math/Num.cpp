@@ -570,7 +570,7 @@ std::string Num::Div()
 	return r;
 }
 
-//一个一个乘上去的，速度很慢
+//先将十进制转为二进制，这样会快一点
 std::string Num::Pow()
 {
 	Bit *temp = second_head;
@@ -585,11 +585,26 @@ std::string Num::Pow()
 		s += temp->r + '0';
 		temp = temp->son;
 	}
-	std::string result = s;
-	for (int i = 1; i < n; ++i) {
-		Num *num = new Num(result, s);
-		result = num->Mul();
+	int time = 1;
+	std::string result = "1";
+	std::string pow = s;
+	while (1) {
+		if (n&time) {
+			if (time == 1) {
+				result = s;
+			}
+			else {
+				Num *num = new Num(result, pow);
+				result = num->Mul();
+				delete num;
+			}
+		}
+		Num *num = new Num(pow, pow);
+		pow = num->Mul();
 		delete num;
+		time <<= 1;
+		if (time > n)
+			break;
 	}
 	return result;
 }
