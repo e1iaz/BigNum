@@ -285,6 +285,7 @@ namespace BigNum
                 String temp;
                 if ((temp = sr.ReadLine()) != null)
                 {
+                    MessageBox.Show(temp);
                     int bit = 0;
                     first = "";
                     second = "";
@@ -341,6 +342,10 @@ namespace BigNum
                     { 
                         textBoxCalc.Text = "";
                     }
+                }
+                else
+                {
+                    MessageBox.Show("文件为空");
                 }
                 sr.Close();
                 
